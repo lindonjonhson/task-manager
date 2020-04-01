@@ -10,11 +10,13 @@
             </h3>
             <!--LIST MENU-->
             <div class="list-menu">
-                <a class="list-menu-item">List #1</a>
-                <a class="list-menu-item is-active">List #2</a>
+                <a class="list-menu-item is-active">List #1</a>
+                <!--DINAMIC LIST-->
+                <!--When using router link, we need to seen the route and the id apart with a comma-->
+                <a *ngFor="let list of lists" [routerLink]="['/lists', list._id]" routerLinkActive="is-active"  class="list-menu-item">{{list.title}}</a>
             </div>
             <!--ADD BUTTON-->
-            <button class="button is-primary" (click)="createNewList()">NEW LIST</button>
+            <button class="button is-primary" routerLink="new-list">NEW LIST</button>
         </div>
 
         <!--TASK LIST-->
@@ -26,12 +28,12 @@
             </h3>
             
             <!--TASKS-->
-            <div class="task">
-                <p>Gotta go fast!</p>
-            </div>
-            
             <div class="task complete">
                 <p>Gotta go fast!</p>
+            </div>
+
+            <div *ngFor="let task of tasks"  class="task">
+                <p>{{task.title}}</p>
             </div>
         </div>
 
