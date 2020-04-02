@@ -1,3 +1,4 @@
+import { NewTaskComponent } from './pages/new-task/new-task.component';
 import { NewListComponent } from './pages/new-list/new-list.component';
 import { TaskViewComponent } from './pages/task-view/task-view.component';
 import { NgModule } from '@angular/core';
@@ -9,6 +10,7 @@ const routes: Routes = [
   //By putting 'blank', and TaskViewComponent, that means that the main page will lead to task view
   { path: '', redirectTo: 'lists', pathMatch: 'full' },
   { path: 'new-list', component: NewListComponent },
+  { path: 'new-task', component: NewTaskComponent },
   { path: 'lists', component: TaskViewComponent },
   { path: 'lists/:id', component: TaskViewComponent }
 ];
