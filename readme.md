@@ -1,10 +1,3 @@
-#Task Manager
-
-This project was originally created by Devstackr.
-
-##Descrition
-
-
 # Task Manager
 
 This project was originally created by Devstackr.
