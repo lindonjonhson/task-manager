@@ -6,13 +6,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 
 const routes: Routes = [
-  //Here we put the paths and where they gonna lead
-  //By putting 'blank', and TaskViewComponent, that means that the main page will lead to task view
+  // Here we put the paths and where they gonna lead
+  // By putting 'blank', and TaskViewComponent, that means that the main page will lead to task view
   { path: '', redirectTo: 'lists', pathMatch: 'full' },
   { path: 'new-list', component: NewListComponent },
-  { path: 'new-task', component: NewTaskComponent },
   { path: 'lists', component: TaskViewComponent },
-  { path: 'lists/:id', component: TaskViewComponent }
+  { path: 'lists/:id', component: TaskViewComponent },
+  { path: 'lists/:id/new-task', component: NewTaskComponent }
 ];
 
 @NgModule({
