@@ -1,5 +1,7 @@
 export class Task {
-    id: string;
+    // Always use "_" for Ids
+    _id: string;
     title: string;
-    listId: string;
+    _listId: string;
+    completed: boolean;
 }

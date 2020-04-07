@@ -19,7 +19,7 @@ export class NewListComponent implements OnInit {
     this.taskService.createList(title).subscribe((list: List) => {
       // console.log(list);
       // Go back to lists/:id
-      this.router.navigate([`/lists`, list.id]);
+      this.router.navigate([`/lists`, list._id]);
     });
   }
 

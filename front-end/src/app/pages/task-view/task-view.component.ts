@@ -1,3 +1,5 @@
+import { List } from './../../models/list.model';
+import { Task } from './../../models/task.model';
 import { TaskService } from './../../services/task.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -9,8 +11,8 @@ import { ActivatedRoute, Params } from '@angular/router';
 })
 export class TaskViewComponent implements OnInit {
 
-  lists: any;
-  tasks: any;
+  lists: List[];
+  tasks: Task[];
 
   constructor(private taskService: TaskService, private route: ActivatedRoute) { }
 
@@ -22,21 +24,30 @@ export class TaskViewComponent implements OnInit {
         // First we send the LIST parameters
         // console.log("These are the parameters");
         // console.log(params);
-        this.taskService.getTasks(params.id).subscribe((tasks: any[]) => {
+        this.taskService.getTasks(params.id).subscribe((tasks: Task[]) => {
             // Then we receive the TASKS of that list
             // console.log("These are the tasks");
-             console.log(tasks);
+            // console.log(tasks);
             this.tasks = tasks;
           });
       });
 
     // This method retrieve all the lists avaliable
     this.taskService.getLists().subscribe(
-      (lists: any[]) => {
+      (lists: List[]) => {
         // console.log("These are the lists");
         // console.log(lists);
         this.lists = lists;
       });
+  }
+
+  onTaskClick(task: Task) {
+    // Set task to completed
+    console.log(task._id, task.title, task._listId);
+    this.taskService.complete(task).subscribe(() => {
+      console.log('Completed Successfully');
+      task.completed = !task.completed;
+    });
   }
 
 }

@@ -27,13 +27,11 @@
             </h3>
             
             <!--TASKS-->
-            <div class="task complete">
-                <p>Gotta go fast!</p>
-            </div>
 
-            <div *ngFor="let task of tasks"  class="task">
+            <div *ngFor="let task of tasks" (click)="onTaskClick(task)"  class="task" [ngClass]=" { 'complete': task.completed} ">
                 <p>{{task.title}}</p>
             </div>
+            
             <!--ADD BUTTON-->
             <button routerLink="./new-task" class="circle-add-button button is-primary">
                 <span class="material-icons md-48">add</span>

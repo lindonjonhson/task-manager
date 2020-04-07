@@ -1,4 +1,5 @@
 export class List {
-    id: string;
+    // Always use "_" for Ids
+    _id: string;
     title: string;
 }
