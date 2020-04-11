@@ -8,6 +8,8 @@ const { mongoose } = require('./db/mongoose');
 // Load in the mongoose models
 const { List, Task, User } = require('./db/models');
 
+// MIDDLEWARE
+
 // Load middleware
 app.use(bodyParser.json());
 
@@ -19,6 +21,56 @@ app.use(function(req, res, next) {
     next();
   });
 
+// Verify Refresh Token middleware( which will be verifying the session) 
+let verifySession = (req, res, next) => {
+    //Grab refresh token from header
+    refreshToken = req.header('x-refresh-token');
+    // console.log(refreshToken);
+    //Grab Id from request header
+    let _id = req.header('_id');
+    // console.log(_id);
+
+    User.findByIdAndToken(_id, refreshToken).then((user) => {
+        if(!user){
+            //User not found
+            return Promise.reject({
+                'error': 'User not found. Make sure that the refresh token and user id are correct.'
+            });
+        }
+        // if the code reaches here the user was found
+        // therefore refresh token exists, but we have to check if it has expired
+        req.user_id = user._id;
+        req.userObject = user;
+        req.refreshToken = refreshToken;
+
+        let isSessionValid = false;
+
+        user.sessions.forEach((session) => {
+            if (session.token === refreshToken) {
+                //Check if session has expired
+                if(User.hasRefreshTokenExpired(session.expiresAt) === false){
+                    //refresh token not expired
+                    isSessionValid = true;
+                }
+            }
+        });
+
+        if(isSessionValid){
+            // session is valid, call next to continue the webreq
+            next();
+        }else{
+            // session not valid
+            return Promise.reject({
+                'error': 'Refresh token has expired or the session is invalid'
+            });
+        }
+    }).catch((e) => {
+        res.status(401).send(e);
+    });
+};
+
+
+// END MIDDLEWARE
 
 // ROUTE HANDLERS
 
@@ -214,7 +266,6 @@ app.post('/users', (req, res) => {
     })
 })
 
-
 /**
  * POST /users/login
  * Purpose: Login
@@ -243,3 +294,17 @@ app.post('/users/login', (req, res) => {
         res.status(400).send(e);
     });
 })
+
+/**
+ * GET /users/me/access-token
+ * Purpose: Generates and returns access token
+ */
+
+ app.get('/users/me/access-token', verifySession, (req, res) => {
+    // We know the caller is authenticated and we have user Id and Object avaliable
+    req.userObject.generateAccessAuthToken().then((accessToken) => {
+        res.header('x-access-token', accessToken).send({accessToken});
+    }).catch((e) => {
+        res.status(400).send(e);
+    })
+ });
