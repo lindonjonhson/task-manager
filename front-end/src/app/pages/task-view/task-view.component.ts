@@ -21,15 +21,19 @@ export class TaskViewComponent implements OnInit {
     // So we can retrieve the tasks that belong to that listId
     this.route.params.subscribe(
       (params: Params) => {
-        // First we send the LIST parameters
-        // console.log("These are the parameters");
-        // console.log(params);
-        this.taskService.getTasks(params.id).subscribe((tasks: Task[]) => {
-            // Then we receive the TASKS of that list
-            // console.log("These are the tasks");
-            // console.log(tasks);
-            this.tasks = tasks;
-          });
+        if(params.id) {
+          // First we send the LIST parameters
+          // console.log("These are the parameters");
+          // console.log(params);
+          this.taskService.getTasks(params.id).subscribe((tasks: Task[]) => {
+              // Then we receive the TASKS of that list
+              // console.log("These are the tasks");
+              // console.log(tasks);
+              this.tasks = tasks;
+            });
+        }else {
+          this.tasks = undefined;
+        }
       });
 
     // This method retrieve all the lists avaliable
