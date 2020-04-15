@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
 const app = express();
 
 // This is the database connection
@@ -21,6 +22,24 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Expose-Headers", "x-access-token, x-refresh-token");
     next();
   });
+
+// check the request has a valid JWT access token
+let authenticate = (req, res, next) => {
+    let token = req.header('x-access-token');
+
+    // verify the JWT
+    jwt.verify(token, User.getJWTSecret(), (err, decoded) => {
+        if (err){
+            // There was an error
+            // JWT is invalid - DON'T AUTHENTICATE
+            res.status(401).send(err);
+        } else {
+            // JWT is valid
+            req.user_id = decoded._id;
+            next();
+        }
+    });
+}
 
 // Verify Refresh Token middleware( which will be verifying the session) 
 let verifySession = (req, res, next) => {
@@ -81,10 +100,14 @@ let verifySession = (req, res, next) => {
  * GET /lists
  * Purpose: Get all lists
  */
-app.get("/lists", (req, res) => {
-    // Return an array of all the lists in the database
-    List.find({}).then((lists)=>{
-        res.send(lists);
+app.get("/lists", authenticate, (req, res) => {
+    // Return an array of  the lists in the database that belong to the authenticated user
+    List.find({
+        _userId: req.user_id
+    }).then((lists)=>{
+        res.send(lists); 
+    }).catch((e) => {
+        res.send(e);
     });
 });
 
@@ -134,6 +157,9 @@ app.delete("/lists/:id", (req, res) => {
         _id: req.params.id
     }).then((removedListDoc) => {
         res.send(removedListDoc);
+
+        // delete all the tasks that are on the deleted list
+        deleteTasksFromList(removedListDoc._id);
     });
 });
 
@@ -309,3 +335,12 @@ app.post('/users/login', (req, res) => {
         res.status(400).send(e);
     })
  });
+
+ // Helper method
+ let deleteTasksFromList = (_listId) => {
+    Task.deleteMany({
+        _listId
+    }).then(() => {
+        console.log("Tasks from " + _listId + " were deleted");
+    });
+ }
