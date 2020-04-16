@@ -115,12 +115,13 @@ app.get("/lists", authenticate, (req, res) => {
  * POST /lists
  * Purpose: Create new list
  */
-app.post("/lists", (req, res) => {
+app.post("/lists", authenticate, (req, res) => {
     // Create a new list and return the new list document back to the user, which includes the id
     // List information will be passed in via JSON request body
     let title = req.body.title;
     let newList = new List({
-        title
+        title,
+        _userId: req.user_id
     });
     newList.save().then((listDoc)=>{
         res.send(listDoc);
@@ -132,12 +133,12 @@ app.post("/lists", (req, res) => {
  * PATCH /lists/:id
  * Purpose: Update specified list
  */
-app.patch("/lists/:id", (req, res) => {
+app.patch("/lists/:id", authenticate, (req, res) => {
     // We want to update the specified list ( list document with id in the URL ) with new values specified in the JSON body
 
     List.findOneAndUpdate(
         // Search Statement
-        { _id: req.params.id},
+        { _id: req.params.id, _userId: req.user_id },
         // Update Statement
         { $set: req.body}
         // We are using req.params.id, because the id will come through the url
