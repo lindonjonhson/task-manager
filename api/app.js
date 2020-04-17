@@ -152,10 +152,11 @@ app.patch("/lists/:id", authenticate, (req, res) => {
  * DELETE /lists/:id
  * Purpose: Delete specified list
  */
-app.delete("/lists/:id", (req, res) => {
+app.delete("/lists/:id", authenticate, (req, res) => {
     // We want to delete the specified list ( list document with id in the URL )
     List.findOneAndRemove({
-        _id: req.params.id
+        _id: req.params.id,
+        _userId: req.user_id
     }).then((removedListDoc) => {
         res.send(removedListDoc);
 
@@ -175,11 +176,12 @@ app.listen(3000, () => {
  * GET /lists/:listId/tasks
  * Purpose: Get all tasks
  */
-app.get("/lists/:listId/tasks", (req, res) => {
+app.get("/lists/:listId/tasks", authenticate, (req, res) => {
     // Return an array of all the tasks that belong to the list id
 
     Task.find({
-        _listId: req.params.listId
+        _listId: req.params.listId,
+        _userId: req.user_id
     }).then((tasks)=>{
         res.send(tasks);
     });
