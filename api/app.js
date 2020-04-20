@@ -180,8 +180,7 @@ app.get("/lists/:listId/tasks", authenticate, (req, res) => {
     // Return an array of all the tasks that belong to the list id
 
     Task.find({
-        _listId: req.params.listId,
-        _userId: req.user_id
+        _listId: req.params.listId
     }).then((tasks)=>{
         res.send(tasks);
     });
@@ -192,7 +191,7 @@ app.get("/lists/:listId/tasks", authenticate, (req, res) => {
  * GET /lists/:listId/tasks/:taskId
  * Purpose: Find one particular task
  */
-app.get("/lists/:listId/tasks/:taskId", (req, res) => {
+app.get("/lists/:listId/tasks/:taskId", authenticate, (req, res) => {
     // Find one particular task
     Task.findOne(
         { 
@@ -208,18 +207,36 @@ app.get("/lists/:listId/tasks/:taskId", (req, res) => {
  * POST /lists/:listId/tasks
  * Purpose: Create new task with the "listId"
  */
-app.post("/lists/:listId/tasks", (req, res) => {
+app.post("/lists/:listId/tasks", authenticate, (req, res) => {
     // Create a new task and return the new taks document back to the user, which includes the id
     // Task information will be passed in via JSON request body
-    // let title = req.body.title;
-    // let listId = req.params.listId
-    let newTask = new Task({
-        title: req.body.title,
-        _listId: req.params.listId
-    });
 
-    newTask.save().then((taskDoc)=>{
-        res.send(taskDoc);
+    //Firstly we gonna validate the user
+    List.findOne({
+        _id: req.params.listId,
+        _userId: req.user_id
+    }).then((list) => {
+        if (list) {
+            // List object is valid
+            // Therefore the currently authenticated user can create new tasks
+            return true;
+        }
+        // else - the list object is undefined
+        return false
+    }).then((canCreateTask) => {
+        if(canCreateTask){
+            // let title = req.body.title;
+            // let listId = req.params.listId
+            let newTask = new Task({
+                title: req.body.title,
+                _listId: req.params.listId
+            });
+            newTask.save().then((taskDoc)=>{
+                res.send(taskDoc);
+            });
+        } else {
+            res.sendStatus(404);
+        }
     });
 
 });
@@ -228,21 +245,40 @@ app.post("/lists/:listId/tasks", (req, res) => {
  * PATCH /lists/:id
  * Purpose: Update specified tasks
  */
-app.patch("/lists/:listId/tasks/:taskId", (req, res) => {
+app.patch("/lists/:listId/tasks/:taskId", authenticate, (req, res) => {
     // We want to update the specified task ( task document with id in the URL ) with new values specified in the JSON body
 
-    Task.findOneAndUpdate(
-        // Search statement
-        { 
-            _id: req.params.taskId,
-            _listId: req.params.listId
-        },
-        // Update statement
-        { $set: req.body}
-        // We are using req.params.id, because the id will come through the url
-        // "$set" will get the whole object List, so the method will update all the informations
-    ).then(() => { 
-        res.send({message: "Completed Successfully"});
+    // Firstly we gonna validate the user
+    List.findOne({
+        _id: req.params.listId,
+        _userId: req.user_id
+    }).then((list) => {
+        if(list){
+            // List object is valid
+            // Therefore the currently authenticated user can update new tasks
+            return true;
+        }
+        // else - the list object is undefined
+        return false;
+    }).then((canUpdateTask) => {
+        if(canUpdateTask){
+            // Currently authenticated user can update tasks
+            Task.findOneAndUpdate(
+                // Search statement
+                { 
+                    _id: req.params.taskId,
+                    _listId: req.params.listId
+                },
+                // Update statement
+                { $set: req.body}
+                // We are using req.params.id, because the id will come through the url
+                // "$set" will get the whole object List, so the method will update all the informations
+            ).then(() => { 
+                res.send({message: "Completed Successfully"});
+            });
+        }else{
+            res.sendStatus(404);
+        }
     });
 
 });
@@ -251,16 +287,38 @@ app.patch("/lists/:listId/tasks/:taskId", (req, res) => {
  * DELETE /lists/:listId/tasks/:taskId
  * Purpose: Delete specified task
  */
-app.delete("/lists/:listId/tasks/:taskId", (req, res) => {
-    // We want to delete the specified list ( list document with id in the URL )
-    Task.findOneAndRemove(
-        { 
-            _id: req.params.taskId,
-            _listId: req.params.listId
-        }
-    ).then((removedTaskDoc) => {
-        res.send(removedTaskDoc);
-    });
+app.delete("/lists/:listId/tasks/:taskId", authenticate, (req, res) => {
+
+  //Firstly we gonna validate the user
+  List.findOne({
+    _id: req.params.listId,
+    _userId: req.user_id
+}).then((list) => {
+    if(list){
+        // List object is valid
+        // Therefore the currently authenticated user can delete tasks
+        return true;
+    }
+    // else - the list object is undefined
+    return false;
+}).then((canDeleteTask) => {
+    if(canDeleteTask){
+        // We want to delete the specified list ( list document with id in the URL )
+        Task.findOneAndRemove(
+            { 
+                _id: req.params.taskId,
+                _listId: req.params.listId
+            }
+        ).then((removedTaskDoc) => {
+            res.send(removedTaskDoc);
+        });
+    }else{
+        res.sendStatus(404);
+    }
+});
+
+
+
 });
 
 /* USER ROUTES */
