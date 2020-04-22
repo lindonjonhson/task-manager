@@ -12,7 +12,7 @@ export class WebRequestService {
     this.ROOT_URL = 'http://localhost:3000';
    }
 
-   get(uri: string){
+   get(uri: string) {
       return this.http.get(`${this.ROOT_URL}/${uri}`);
    }
 
