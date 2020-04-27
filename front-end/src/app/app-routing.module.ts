@@ -1,3 +1,4 @@
+import { SignupPageComponent } from './pages/signup-page/signup-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { NewTaskComponent } from './pages/new-task/new-task.component';
 import { NewListComponent } from './pages/new-list/new-list.component';
@@ -10,6 +11,7 @@ const routes: Routes = [
   // Here we put the paths and where they gonna lead
   // By putting 'blank', and TaskViewComponent, that means that the main page will lead to task view
   { path: '', redirectTo: 'lists', pathMatch: 'full' },
+  { path: 'signup', component: SignupPageComponent },
   { path: 'new-list', component: NewListComponent },
   { path: 'login', component: LoginPageComponent },
   { path: 'lists', component: TaskViewComponent },

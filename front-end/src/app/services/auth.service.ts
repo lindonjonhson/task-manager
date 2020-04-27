@@ -23,6 +23,18 @@ export class AuthService {
     );
   }
 
+  signup(email: string, password: string) {
+    return this.webService.signup(email, password).pipe(
+      // We are using this because we don't want to use the login method multiple times
+      shareReplay(),
+      tap((res: HttpResponse<any>) => {
+        // Auth tokens will be the head of this response
+        this.setSession(res.body._id, res.headers.get('x-access-token'), res.headers.get('x-refresh-token'));
+        console.log('Successfully signed up');
+      })
+    );
+  }
+
   logout() {
     this.removeSession();
     this.router.navigate(['/login']);

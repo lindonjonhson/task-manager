@@ -3,19 +3,19 @@ import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-login-page',
-  templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.sass']
+  selector: 'app-signup-page',
+  templateUrl: './signup-page.component.html',
+  styleUrls: ['./signup-page.component.sass']
 })
-export class LoginPageComponent implements OnInit {
+export class SignupPageComponent implements OnInit {
 
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
   }
 
-  onLoginButtonClicked(email: string, pw: string) {
-    this.authService.login(email, pw).subscribe((res: HttpResponse<any>) => {
+  onSignup(email: string, pw: string) {
+    this.authService.signup(email, pw).subscribe((res: HttpResponse<any>) => {
       console.log('Logged in');
       console.log(res);
     });
