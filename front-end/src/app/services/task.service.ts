@@ -21,6 +21,10 @@ export class TaskService {
     return this.webReqService.post('lists', {title});
   }
 
+  deleteList(id: string) {
+    return this.webReqService.delete(`lists/${id}`);
+  }
+
   // TASK METHODS
 
   getTasks(listId: string) {
