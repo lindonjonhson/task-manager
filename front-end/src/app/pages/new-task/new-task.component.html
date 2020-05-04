@@ -7,7 +7,7 @@
         <br><br>
 
         <div class="buttons is-right">
-            <button routerLink="/" class="button is-danger is-outlined">Delete</button>
+            <button [routerLink]="['/lists', listId]" class="button is-danger is-outlined">Delete</button>
             <button (click)="createTask(taskTitleInput.value)" class="button is-primary">Create</button>
         </div>
 

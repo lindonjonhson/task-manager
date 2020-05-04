@@ -12,7 +12,7 @@ export class NewTaskComponent implements OnInit {
 
   constructor(private taskService: TaskService, private router: Router, private route: ActivatedRoute) { }
 
-  private listId: string;
+   listId: string;
 
   ngOnInit() {
     // This method will retrieve the listId from the url

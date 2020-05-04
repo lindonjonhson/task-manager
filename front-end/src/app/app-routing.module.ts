@@ -1,3 +1,4 @@
+import { EditListComponent } from './pages/edit-list/edit-list.component';
 import { SignupPageComponent } from './pages/signup-page/signup-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { NewTaskComponent } from './pages/new-task/new-task.component';
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'lists', pathMatch: 'full' },
   { path: 'signup', component: SignupPageComponent },
   { path: 'new-list', component: NewListComponent },
+  { path: 'edit-list/:id', component: EditListComponent },
   { path: 'login', component: LoginPageComponent },
   { path: 'lists', component: TaskViewComponent },
   { path: 'lists/:id', component: TaskViewComponent },

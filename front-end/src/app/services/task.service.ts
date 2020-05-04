@@ -25,6 +25,10 @@ export class TaskService {
     return this.webReqService.delete(`lists/${id}`);
   }
 
+  editList(id: string, title: string) {
+    return this.webReqService.patch(`lists/${id}`, {title});
+  }
+
   // TASK METHODS
 
   getTasks(listId: string) {

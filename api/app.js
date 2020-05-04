@@ -149,7 +149,7 @@ app.patch("/lists/:id", authenticate, (req, res) => {
         // We are using req.params.id, because the id will come through the url
         // "$set" will get the whole object List, so the method will update all the informations
     ).then(() => { 
-        res.sendStatus(200);
+        res.send({ 'message': 'changes applied successfully'});
     });
 });
 
