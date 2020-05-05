@@ -60,23 +60,6 @@
         &.is-active
             color: $dark-green
             background-color: #cff8cf
-    
-.task
-    background: white
-    padding: 15px 20px
-    border-radius: 5px
-    margin-top: 10px
-    transition: box-shadow 0.4s ease, transform 0.4s ease
-    &:not(.complete) 
-        cursor: pointer   
-        &:hover
-            box-shadow: 0 0 0 5px #eeeeee
-        &:active
-            transform: scale(0.95)
-    //Classe para quando a tarefa estiver concluida
-    &.complete
-        text-decoration: line-through
-        opacity: 0.7
 
 .circle-add-button
     position: absolute
@@ -90,3 +73,34 @@
     font-size: 20px
     color: #777
     text-align: center
+    
+.task
+    display: flex
+    background: white
+    padding: 15px 20px
+    border-radius: 5px
+    margin-top: 10px
+    transition: box-shadow 0.4s ease, transform 0.4s ease
+    align-items: center
+    &:not(.complete) 
+        cursor: pointer   
+        &:hover
+            box-shadow: 0 0 0 5px #eeeeee
+            .task-buttons
+                opacity: 1
+                transform: scale(1)
+        &:active
+            transform: scale(0.95)
+    //Classe para quando a tarefa estiver concluida
+    &.complete .task-text
+        text-decoration: line-through
+        opacity: 0.7
+
+    .task-text
+        flex-grow: 1
+    .task-buttons
+        opacity: 0
+        transition: opacity 0.3s, transform 0.3s
+        transform: scale(0.5)
+        .is-danger
+            margin-right: 10px

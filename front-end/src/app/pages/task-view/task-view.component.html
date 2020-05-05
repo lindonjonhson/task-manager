@@ -57,7 +57,24 @@
                 <!--TASKS-->
     
                 <div *ngFor="let task of tasks" (click)="onTaskClick(task)"  class="task" [ngClass]=" { 'complete': task.completed} ">
+                  
+                  <div class="task-text">
                     <p>{{task.title}}</p>
+                  </div>
+
+                  <div class="task-buttons">
+                    <button class="button is-danger">
+                      <span class="material-icons">
+                        delete_forever
+                      </span>
+                    </button>
+
+                    <button class="button">
+                      <span class="material-icons">
+                        create
+                      </span>
+                    </button>
+                  </div>
                 </div>
 
                 <h3 class="empty-state-text" *ngIf="tasks.length === 0">There are no tasks here! Click the "+" button to add a new task.</h3>
