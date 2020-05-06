@@ -247,7 +247,7 @@ app.post("/lists/:listId/tasks", authenticate, (req, res) => {
 });
 
 /**
- * PATCH /lists/:id
+ * PATCH /lists/:id/tasks/:taskId
  * Purpose: Update specified tasks
  */
 app.patch("/lists/:listId/tasks/:taskId", authenticate, (req, res) => {

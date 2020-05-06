@@ -1,0 +1,15 @@
+<div class="centered-content">
+    <div class="modal-box">
+        <h2 class="title">Edit task</h2>
+
+        <input #taskTitleInput class="input has-background-light" type="text" placeholder="Enter task name">
+        
+        <br><br>
+
+        <div class="buttons is-right">
+            <button [routerLink]="['/lists', listId]" class="button is-danger is-outlined">Cancel</button>
+            <button (click)="updateTask(taskTitleInput.value)" class="button is-primary">Save</button>
+        </div>
+
+    </div>
+</div>

@@ -41,6 +41,14 @@ export class TaskService {
     return this.webReqService.post(`lists/${listId}/tasks`, {title});
   }
 
+  updateTask(listId: string, taskId: string, title: string) {
+    return this.webReqService.patch(`lists/${listId}/tasks/${taskId}`, {title});
+  }
+
+  deleteTask(listId: string, id: string) {
+    return this.webReqService.delete(`lists/${listId}/tasks/${id}`);
+  }
+
   // Set task as completed
 
   complete(task: Task) {

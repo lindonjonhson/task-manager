@@ -63,15 +63,18 @@
                   </div>
 
                   <div class="task-buttons">
-                    <button class="button is-danger">
+                    <button [routerLink]="['edit-task', task._id]"  class="button">
+                    <!--
+                      <button [routerLink]="['/edit-list', task._id]"  class="button">
+                    -->
                       <span class="material-icons">
-                        delete_forever
+                        create
                       </span>
                     </button>
 
-                    <button class="button">
+                    <button class="button is-danger" (click)="onTaskDeleteClick(task._id)">
                       <span class="material-icons">
-                        create
+                        delete_forever
                       </span>
                     </button>
                   </div>

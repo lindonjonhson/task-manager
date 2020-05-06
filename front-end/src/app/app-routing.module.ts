@@ -1,3 +1,4 @@
+import { EditTaskComponent } from './pages/edit-task/edit-task.component';
 import { EditListComponent } from './pages/edit-list/edit-list.component';
 import { SignupPageComponent } from './pages/signup-page/signup-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
@@ -18,7 +19,8 @@ const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'lists', component: TaskViewComponent },
   { path: 'lists/:id', component: TaskViewComponent },
-  { path: 'lists/:id/new-task', component: NewTaskComponent }
+  { path: 'lists/:id/new-task', component: NewTaskComponent },
+  { path: 'lists/:listId/edit-task/:taskId', component: EditTaskComponent }
 ];
 
 @NgModule({

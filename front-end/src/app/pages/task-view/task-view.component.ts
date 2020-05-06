@@ -33,6 +33,11 @@ export class TaskViewComponent implements OnInit {
               // console.log("These are the tasks");
               // console.log(tasks);
               this.tasks = tasks;
+              /*
+              tasks.forEach(task => {
+                console.log(task._listId);
+              });
+              */
             });
         } else {
           this.tasks = undefined;
@@ -42,15 +47,11 @@ export class TaskViewComponent implements OnInit {
     // This method retrieve all the lists avaliable
     this.taskService.getLists().subscribe(
       (lists: List[]) => {
-        // console.log("These are the lists");
-        // console.log(lists);
         this.lists = lists;
       });
   }
 
   onTaskClick(task: Task) {
-    // Set task to completed
-    console.log(task._id, task.title, task._listId);
     this.taskService.complete(task).subscribe(() => {
       console.log('Completed Successfully');
       task.completed = !task.completed;
@@ -60,7 +61,17 @@ export class TaskViewComponent implements OnInit {
   onDeleteListClick() {
     return this.taskService.deleteList(this.selectedListId).subscribe((res: any) => {
       this.router.navigate(['/lists']);
-      // console.log(res);
+    });
+  }
+
+  onTaskDeleteClick(id: string) {
+    return this.taskService.deleteTask(this.selectedListId, id).subscribe((res: any) => {
+      /*
+      console.log('Deleted Successfuly');
+      this.router.navigate([`/lists`, this.selectedListId]);
+      */
+     this.tasks = this.tasks.filter(val => val._id !== id);
+     console.log(res);
     });
   }
 
