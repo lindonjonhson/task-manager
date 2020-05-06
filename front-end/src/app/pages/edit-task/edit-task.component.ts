@@ -10,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditTaskComponent implements OnInit {
 
+  oldname: string;
   taskId: string;
   listId: string;
 
@@ -21,6 +22,10 @@ export class EditTaskComponent implements OnInit {
         this.taskId = params.taskId;
         this.listId = params.listId;
       });
+
+    this.taskService.getTask(this.listId, this.taskId).subscribe((task: Task) => {
+      this.oldname = task.title;
+    });
   }
 
   updateTask(title: string) {

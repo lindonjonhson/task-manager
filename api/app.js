@@ -117,6 +117,21 @@ app.get("/lists", authenticate, (req, res) => {
 });
 
 /**
+ * GET /lists/:listId/tasks/:taskId
+ * Purpose: Find one particular list
+ */
+app.get("/lists/:listId", authenticate, (req, res) => {
+    // Find one particular task
+    List.findOne(
+        { 
+            _id: req.params.listId
+        }
+    ).then((list) => {
+        res.send(list);
+    });
+});
+
+/**
  * POST /lists
  * Purpose: Create new list
  */

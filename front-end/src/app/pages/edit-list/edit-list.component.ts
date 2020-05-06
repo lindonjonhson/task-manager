@@ -11,6 +11,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 })
 export class EditListComponent implements OnInit {
 
+  oldname: string;
   private selectedListId: string;
 
   constructor(private taskService: TaskService, private router: Router, private route: ActivatedRoute) { }
@@ -20,6 +21,10 @@ export class EditListComponent implements OnInit {
       (params: Params) => {
         this.selectedListId = params.id;
       });
+    this.taskService.getList(this.selectedListId).subscribe((list: List) => {
+      console.log(list.title);
+      this.oldname = list.title;
+    });
   }
 
   updateList(title: string) {
