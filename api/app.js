@@ -117,7 +117,7 @@ app.get("/lists", authenticate, (req, res) => {
 });
 
 /**
- * GET /lists/:listId/tasks/:taskId
+ * GET /lists/:listId
  * Purpose: Find one particular list
  */
 app.get("/lists/:listId", authenticate, (req, res) => {
